@@ -1,4 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
+import { useEffect, useRef, useState } from "react";
+
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
@@ -119,8 +121,45 @@ function ExempelrapportPage() {
   );
 }
 
-function StaticReport() {
+function ReportIframe({ html }: { html: string }) {
+  const ref = useRef<HTMLIFrameElement>(null);
+  const [height, setHeight] = useState(600);
+
+  useEffect(() => {
+    const iframe = ref.current;
+    if (!iframe) return;
+    const resize = () => {
+      try {
+        const doc = iframe.contentDocument;
+        if (doc?.body) {
+          setHeight(doc.documentElement.scrollHeight + 4);
+        }
+      } catch {
+        /* ignore */
+      }
+    };
+    iframe.addEventListener("load", resize);
+    const interval = window.setInterval(resize, 500);
+    return () => {
+      iframe.removeEventListener("load", resize);
+      window.clearInterval(interval);
+    };
+  }, [html]);
+
   return (
+    <iframe
+      ref={ref}
+      title="Exempelrapport"
+      sandbox="allow-same-origin"
+      srcDoc={html}
+      className="w-full rounded-[6px] border border-rule bg-white"
+      style={{ height }}
+    />
+  );
+}
+
+function StaticReport() {
+
     <section className="mx-auto max-w-4xl px-5 sm:px-8">
       <article className="rounded-[6px] border border-rule bg-paper p-6 sm:p-10">
         <header className="border-b border-ink/80 pb-6">
