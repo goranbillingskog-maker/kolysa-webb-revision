@@ -14,7 +14,39 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      ladder_state: {
+        Row: {
+          id: number
+          orders_count: number
+          updated_at: string
+        }
+        Insert: {
+          id?: number
+          orders_count?: number
+          updated_at?: string
+        }
+        Update: {
+          id?: number
+          orders_count?: number
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      processed_orders: {
+        Row: {
+          order_id: string
+          processed_at: string
+        }
+        Insert: {
+          order_id: string
+          processed_at?: string
+        }
+        Update: {
+          order_id?: string
+          processed_at?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
