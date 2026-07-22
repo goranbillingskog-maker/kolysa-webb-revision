@@ -21,10 +21,7 @@ function createPublishableClient() {
 }
 
 function renderMarkdown(content: string): string {
-  return marked.parse(content, {
-    headerIds: false,
-    mangle: false,
-  }) as string;
+  return marked.parse(content, { gfm: true }) as string;
 }
 
 export type ReportContent = {
