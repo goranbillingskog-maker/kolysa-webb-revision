@@ -119,9 +119,10 @@ export const updateProcessedOrder = createServerFn({ method: "POST" })
   .inputValidator((d: unknown) => updateOrderSchema.parse(d))
   .handler(async ({ data, context }) => {
     await assertAdmin(context);
-    const patch: Record<string, unknown> = {};
+    const patch: { status?: string; notes?: string | null } = {};
     if (data.status !== undefined) patch.status = data.status;
     if (data.notes !== undefined) patch.notes = data.notes;
+
     const { error } = await context.supabase
       .from("processed_orders")
       .update(patch)
