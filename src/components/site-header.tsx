@@ -9,7 +9,7 @@ export function SiteHeader() {
           className="font-serif text-2xl tracking-tight text-ink"
           aria-label="Kolysa – startsida"
         >
-          Kolysa
+          Kolysa.com
         </Link>
         <nav aria-label="Huvudmeny" className="flex items-center gap-3 sm:gap-6">
           <Link
