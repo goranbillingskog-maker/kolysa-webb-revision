@@ -79,15 +79,20 @@ function ExempelrapportPage() {
         </section>
 
         {hasCustomContent ? (
-          <section className="mx-auto max-w-4xl px-5 sm:px-8">
-            <article
-              className="report-body rounded-[6px] border border-rule bg-paper p-6 sm:p-10"
-              dangerouslySetInnerHTML={{ __html: report.html }}
-            />
+          <section className="mx-auto max-w-5xl px-5 sm:px-8">
+            {report.format === "html" ? (
+              <ReportIframe html={report.html} />
+            ) : (
+              <article
+                className="report-body rounded-[6px] border border-rule bg-paper p-6 sm:p-10"
+                dangerouslySetInnerHTML={{ __html: report.html }}
+              />
+            )}
           </section>
         ) : (
           <StaticReport />
         )}
+
 
         {/* CTA */}
         <section className="mx-auto mt-16 max-w-4xl px-5 sm:px-8">
