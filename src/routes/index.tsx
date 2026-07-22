@@ -202,7 +202,7 @@ function Index() {
             </div>
             <div className="mt-10 grid gap-6 md:grid-cols-3">
               {PACKAGES.map((p) => (
-                <PackageCard key={p.id} pkg={p} />
+                <PackageCard key={p.id} pkg={p} ladderStatus={ladderStatus} />
               ))}
             </div>
           </div>
