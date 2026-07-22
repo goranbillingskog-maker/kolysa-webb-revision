@@ -15,7 +15,7 @@ export const PACKAGES: PackageInfo[] = [
   {
     id: "report",
     name: "Rapport",
-    price: "2 900 kr",
+    price: "795 kr",
     tagline: "Skriftlig granskning levererad inom 24 timmar.",
     features: [
       "Manuell granskning av sju områden",
@@ -27,24 +27,24 @@ export const PACKAGES: PackageInfo[] = [
   {
     id: "plus",
     name: "Rapport + Genomgång",
-    price: "4 900 kr",
+    price: "1 995 kr",
     tagline: "Rapporten plus ett videosamtal där vi går igenom allt.",
     features: [
       "Allt i Rapport",
-      "45 min videomöte med mig",
+      "30 min videomöte med mig",
       "Svar på uppföljande frågor via mejl i två veckor",
     ],
     featured: true,
   },
   {
     id: "monitor",
-    name: "Rapport + Månadsövervakning",
-    price: "895 kr / mån",
-    tagline: "För dig som vill hålla sajten frisk över tid.",
+    name: "Bevakning",
+    price: "249 kr / mån",
+    tagline: "För dig som vill hålla koll över tid.",
     features: [
-      "Startrapport ingår",
-      "Kontroll av drift, säkerhet och sökbarhet varje månad",
-      "Kort statusmejl med det viktigaste",
+      "Ny granskning varje kvartal",
+      "Larm om betyget sjunker",
+      "Kort statusmejl efter varje granskning",
     ],
   },
 ];
