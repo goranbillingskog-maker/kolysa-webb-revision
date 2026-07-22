@@ -34,6 +34,22 @@ export const PLUS_PAYMENT_LINK =
 export const MONITOR_PAYMENT_LINK =
   "https://example.lemonsqueezy.com/checkout/bevakning";
 
+// Stripe Price IDs för kampanjstegen (steg 1..10). Klistra in de skarpa
+// price_...-id:na när de finns. Webhooken räknar endast upp ladder_state
+// när ett köp matchar ett av dessa Price IDs.
+export const LADDER_PRICE_IDS: readonly string[] = [
+  "price_ladder_step_1_placeholder",
+  "price_ladder_step_2_placeholder",
+  "price_ladder_step_3_placeholder",
+  "price_ladder_step_4_placeholder",
+  "price_ladder_step_5_placeholder",
+  "price_ladder_step_6_placeholder",
+  "price_ladder_step_7_placeholder",
+  "price_ladder_step_8_placeholder",
+  "price_ladder_step_9_placeholder",
+  "price_ladder_step_10_placeholder",
+] as const;
+
 export type LadderStatus = {
   campaign_active: boolean;
   orders_count: number;

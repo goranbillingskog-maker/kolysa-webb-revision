@@ -1,71 +1,152 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { timingSafeEqual } from "node:crypto";
+import { createHmac, timingSafeEqual } from "node:crypto";
+import { LADDER_PRICE_IDS } from "@/lib/ladder-config";
 
-// Idempotent webhook: räknar upp orders_count exakt en gång per unik order_id.
-// Skickas från betalningsleverantören vid "order created". Skydda med
-// PAYMENT_WEBHOOK_SECRET som antingen Authorization: Bearer <secret> eller
-// x-webhook-secret-header.
+// Stripe-webhook för kampanjräknaren.
+// Verifierar Stripe-Signature (t=..,v1=..) mot råa request-bodyn med
+// PAYMENT_WEBHOOK_SECRET (Stripe webhook signing secret, whsec_...).
+// Bearbetar endast checkout.session.completed. Idempotent per session-id.
 
-function safeEq(a: string, b: string): boolean {
-  const ab = Buffer.from(a);
-  const bb = Buffer.from(b);
-  if (ab.length !== bb.length) return false;
+const SIGNATURE_TOLERANCE_SECONDS = 60 * 5;
+
+function safeEqHex(a: string, b: string): boolean {
+  if (a.length !== b.length) return false;
+  const ab = Buffer.from(a, "hex");
+  const bb = Buffer.from(b, "hex");
+  if (ab.length !== bb.length || ab.length === 0) return false;
   return timingSafeEqual(ab, bb);
+}
+
+function parseStripeSignature(header: string): { t?: string; v1: string[] } {
+  const parts = header.split(",");
+  const result: { t?: string; v1: string[] } = { v1: [] };
+  for (const part of parts) {
+    const [k, v] = part.split("=");
+    if (!k || !v) continue;
+    if (k === "t") result.t = v;
+    else if (k === "v1") result.v1.push(v);
+  }
+  return result;
+}
+
+function verifyStripeSignature(
+  rawBody: string,
+  header: string,
+  secret: string,
+): boolean {
+  const { t, v1 } = parseStripeSignature(header);
+  if (!t || v1.length === 0) return false;
+  const timestamp = Number(t);
+  if (!Number.isFinite(timestamp)) return false;
+  const now = Math.floor(Date.now() / 1000);
+  if (Math.abs(now - timestamp) > SIGNATURE_TOLERANCE_SECONDS) return false;
+
+  const expected = createHmac("sha256", secret)
+    .update(`${t}.${rawBody}`)
+    .digest("hex");
+  return v1.some((sig) => safeEqHex(sig, expected));
+}
+
+type StripeCheckoutSession = {
+  id?: string;
+  metadata?: Record<string, string> | null;
+  line_items?: {
+    data?: Array<{ price?: { id?: string } | null }>;
+  } | null;
+};
+
+type StripeEvent = {
+  type?: string;
+  data?: { object?: StripeCheckoutSession };
+};
+
+async function fetchLinePriceIds(sessionId: string): Promise<string[]> {
+  const key = process.env.STRIPE_SECRET_KEY;
+  if (!key) return [];
+  try {
+    const res = await fetch(
+      `https://api.stripe.com/v1/checkout/sessions/${encodeURIComponent(
+        sessionId,
+      )}/line_items?limit=100`,
+      { headers: { Authorization: `Bearer ${key}` } },
+    );
+    if (!res.ok) return [];
+    const json = (await res.json()) as {
+      data?: Array<{ price?: { id?: string } | null }>;
+    };
+    return (json.data ?? [])
+      .map((li) => li.price?.id)
+      .filter((id): id is string => typeof id === "string");
+  } catch (err) {
+    console.error("stripe line_items fetch failed", err);
+    return [];
+  }
 }
 
 export const Route = createFileRoute("/api/public/payment-webhook")({
   server: {
     handlers: {
       POST: async ({ request }) => {
-        const expected = process.env.PAYMENT_WEBHOOK_SECRET;
-        if (!expected) {
+        const secret = process.env.PAYMENT_WEBHOOK_SECRET;
+        if (!secret) {
           return new Response("Server misconfigured", { status: 500 });
         }
 
-        const auth = request.headers.get("authorization") ?? "";
-        const bearer = auth.startsWith("Bearer ") ? auth.slice(7) : "";
-        const headerSecret =
-          request.headers.get("x-webhook-secret") ?? bearer ?? "";
-        if (!headerSecret || !safeEq(headerSecret, expected)) {
-          return new Response("Unauthorized", { status: 401 });
+        const signature = request.headers.get("stripe-signature");
+        if (!signature) {
+          return new Response("Missing signature", { status: 401 });
         }
 
-        let body: unknown;
+        const rawBody = await request.text();
+        if (!verifyStripeSignature(rawBody, signature, secret)) {
+          return new Response("Invalid signature", { status: 401 });
+        }
+
+        let event: StripeEvent;
         try {
-          body = await request.json();
+          event = JSON.parse(rawBody) as StripeEvent;
         } catch {
           return new Response("Invalid JSON", { status: 400 });
         }
-        const payload = body as {
-          order_id?: unknown;
-          package?: unknown;
-        };
-        const orderId =
-          typeof payload.order_id === "string" ? payload.order_id.trim() : "";
-        if (!orderId) {
-          return new Response("Missing order_id", { status: 400 });
+
+        if (event.type !== "checkout.session.completed") {
+          return Response.json({ ok: true, ignored: true, reason: "event_type" });
         }
 
-        // Räkna endast upp för "report"-paketet (kampanjen gäller endast det).
-        // Om avsändaren inte skickar package-fältet räknar vi upp ändå,
-        // eftersom endast rapportköpen kommer att pekas mot denna endpoint.
-        const pkg =
-          typeof payload.package === "string" ? payload.package : "report";
-        if (pkg !== "report") {
-          return Response.json({ ok: true, ignored: true, reason: "not_report" });
+        const session = event.data?.object;
+        const sessionId = typeof session?.id === "string" ? session.id : "";
+        if (!sessionId) {
+          return Response.json({ ok: true, ignored: true, reason: "no_session_id" });
+        }
+
+        // Hitta price ids: först från metadata, sedan från inbäddade line_items,
+        // sist genom att hämta line_items via Stripe API om nyckel finns.
+        const priceIds = new Set<string>();
+        const metaPrice = session?.metadata?.price_id;
+        if (typeof metaPrice === "string" && metaPrice) priceIds.add(metaPrice);
+        for (const li of session?.line_items?.data ?? []) {
+          if (typeof li.price?.id === "string") priceIds.add(li.price.id);
+        }
+        if (priceIds.size === 0) {
+          for (const id of await fetchLinePriceIds(sessionId)) priceIds.add(id);
+        }
+
+        const isLadderOrder = Array.from(priceIds).some((id) =>
+          LADDER_PRICE_IDS.includes(id),
+        );
+        if (!isLadderOrder) {
+          return Response.json({ ok: true, ignored: true, reason: "not_ladder" });
         }
 
         const { supabaseAdmin } = await import(
           "@/integrations/supabase/client.server"
         );
 
-        // Idempotent insert: om order_id redan finns → hoppa över.
         const { error: insertErr } = await supabaseAdmin
           .from("processed_orders")
-          .insert({ order_id: orderId });
+          .insert({ order_id: sessionId });
 
         if (insertErr) {
-          // 23505 = unique_violation → redan hanterad, allt bra.
           if ((insertErr as { code?: string }).code === "23505") {
             return Response.json({ ok: true, duplicate: true });
           }
@@ -73,24 +154,16 @@ export const Route = createFileRoute("/api/public/payment-webhook")({
           return new Response("DB error", { status: 500 });
         }
 
-        // Öka räknaren atomiskt via en RPC-liknande UPDATE ... RETURNING.
+        const { data: current } = await supabaseAdmin
+          .from("ladder_state")
+          .select("orders_count")
+          .eq("id", 1)
+          .single();
+
         const { data: updated, error: updateErr } = await supabaseAdmin
           .from("ladder_state")
           .update({
-            orders_count:
-              // supabase-js har ingen native "increment" — vi läser + skriver.
-              // För att hålla det atomiskt använder vi SQL via rpc? Enklare:
-              // gör en läs-uppdatera-cykel; kollisionsfönstret är litet och
-              // dubbelträff är acceptabelt enligt spec.
-              (
-                (
-                  await supabaseAdmin
-                    .from("ladder_state")
-                    .select("orders_count")
-                    .eq("id", 1)
-                    .single()
-                ).data?.orders_count ?? 0
-              ) + 1,
+            orders_count: (current?.orders_count ?? 0) + 1,
             updated_at: new Date().toISOString(),
           })
           .eq("id", 1)
@@ -115,7 +188,7 @@ export const Route = createFileRoute("/api/public/payment-webhook")({
             "access-control-allow-origin": "*",
             "access-control-allow-methods": "POST, OPTIONS",
             "access-control-allow-headers":
-              "content-type, authorization, x-webhook-secret",
+              "content-type, stripe-signature",
           },
         }),
     },
