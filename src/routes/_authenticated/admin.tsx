@@ -508,6 +508,110 @@ function CustomersSection({
   );
 }
 
+function ReportEditorSection({
+  report,
+  isLoading,
+  onSaved,
+}: {
+  report: ReportContent | undefined;
+  isLoading: boolean;
+  onSaved: () => void;
+}) {
+  const [draft, setDraft] = useState(report?.content ?? "");
+  const [savedAt, setSavedAt] = useState<string | null>(
+    report?.updated_at ?? null,
+  );
+  const [message, setMessage] = useState<string | null>(null);
+
+  const previewHtml = useMemo(
+    () => marked.parse(draft, { gfm: true }) as string,
+    [draft],
+  );
+
+  const saveMutation = useMutation({
+    mutationFn: (content: string) => saveReportContent({ data: { content } }),
+    onSuccess: (data) => {
+      setSavedAt(data.updated_at);
+      setMessage("Sparat.");
+      onSaved();
+      setTimeout(() => setMessage(null), 3000);
+    },
+    onError: () => {
+      setMessage("Kunde inte spara.");
+    },
+  });
+
+  if (isLoading || !report) {
+    return (
+      <section className="mt-14">
+        <h2 className="font-serif text-2xl text-ink">Exempelrapport</h2>
+        <p className="mt-1 text-sm text-subtle">Laddar…</p>
+      </section>
+    );
+  }
+
+  return (
+    <section className="mt-14">
+      <div className="flex items-end justify-between gap-4">
+        <div>
+          <h2 className="font-serif text-2xl text-ink">Exempelrapport</h2>
+          <p className="mt-1 text-sm text-subtle">
+            Klistra in rapportinnehåll här. Du ser en liveförhandsvisning till
+            höger innan du sparar.
+          </p>
+        </div>
+        <div className="text-right">
+          {savedAt && (
+            <p className="text-xs text-subtle">
+              Senast sparad: {new Date(savedAt).toLocaleString("sv-SE")}
+            </p>
+          )}
+          {message && <p className="text-xs text-primary">{message}</p>}
+        </div>
+      </div>
+
+      <div className="mt-6 grid gap-6 lg:grid-cols-2">
+        <div className="flex flex-col gap-3">
+          <label className="text-xs uppercase tracking-wide text-subtle">
+            Markdown-källa
+          </label>
+          <textarea
+            value={draft}
+            onChange={(e) => setDraft(e.target.value)}
+            rows={24}
+            className="w-full flex-1 rounded border border-rule bg-paper px-3 py-2 font-mono text-sm leading-relaxed"
+            placeholder="# Måleri Exempel AB..."
+          />
+          <div className="flex items-center justify-between gap-3">
+            <p className="text-xs text-subtle">
+              Du kan använda Markdown för rubriker, listor och fetstil.
+            </p>
+            <button
+              onClick={() => saveMutation.mutate(draft)}
+              disabled={saveMutation.isPending}
+              className="rounded-[6px] bg-primary px-4 py-2 text-sm text-primary-foreground disabled:opacity-60"
+            >
+              {saveMutation.isPending ? "Sparar…" : "Spara exempelrapport"}
+            </button>
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-3">
+          <p className="text-xs uppercase tracking-wide text-subtle">
+            Förhandsvisning
+          </p>
+          <div className="flex-1 overflow-y-auto rounded-[6px] border border-rule bg-paper p-6">
+            <article
+              className="report-body"
+              dangerouslySetInnerHTML={{ __html: previewHtml }}
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
 function Field({
   label,
   value,
