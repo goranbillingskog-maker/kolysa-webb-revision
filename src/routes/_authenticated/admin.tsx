@@ -1,6 +1,7 @@
 import { createFileRoute, useNavigate, useRouter, Link, redirect } from "@tanstack/react-router";
-import { useState } from "react";
-import { useQuery, useMutation } from "@tanstack/react-query";
+import { useState, useMemo } from "react";
+import { useQuery, useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import { marked } from "marked";
 import { supabase } from "@/integrations/supabase/client";
 import {
   getAdminOverview,
@@ -10,6 +11,11 @@ import {
   type CustomerRow,
   type ProcessedOrderRow,
 } from "@/lib/admin.functions";
+import {
+  getReportContent,
+  saveReportContent,
+  type ReportContent,
+} from "@/lib/report.functions";
 
 export const Route = createFileRoute("/_authenticated/admin")({
   head: () => ({
