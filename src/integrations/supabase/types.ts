@@ -14,6 +14,45 @@ export type Database = {
   }
   public: {
     Tables: {
+      customers: {
+        Row: {
+          created_at: string
+          email: string | null
+          id: string
+          name: string | null
+          notes: string | null
+          package_slug: string | null
+          source: string
+          status: string
+          updated_at: string
+          website_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string | null
+          notes?: string | null
+          package_slug?: string | null
+          source?: string
+          status?: string
+          updated_at?: string
+          website_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          email?: string | null
+          id?: string
+          name?: string | null
+          notes?: string | null
+          package_slug?: string | null
+          source?: string
+          status?: string
+          updated_at?: string
+          website_url?: string | null
+        }
+        Relationships: []
+      }
       ladder_state: {
         Row: {
           id: number
@@ -34,16 +73,67 @@ export type Database = {
       }
       processed_orders: {
         Row: {
+          amount_total: number | null
+          company_name: string | null
+          currency: string | null
+          customer_email: string | null
+          ladder_step: number | null
+          notes: string | null
           order_id: string
+          package_slug: string | null
           processed_at: string
+          status: string
+          updated_at: string
+          website_url: string | null
         }
         Insert: {
+          amount_total?: number | null
+          company_name?: string | null
+          currency?: string | null
+          customer_email?: string | null
+          ladder_step?: number | null
+          notes?: string | null
           order_id: string
+          package_slug?: string | null
           processed_at?: string
+          status?: string
+          updated_at?: string
+          website_url?: string | null
         }
         Update: {
+          amount_total?: number | null
+          company_name?: string | null
+          currency?: string | null
+          customer_email?: string | null
+          ladder_step?: number | null
+          notes?: string | null
           order_id?: string
+          package_slug?: string | null
           processed_at?: string
+          status?: string
+          updated_at?: string
+          website_url?: string | null
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
         }
         Relationships: []
       }
@@ -52,10 +142,16 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -182,6 +278,8 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin"],
+    },
   },
 } as const
