@@ -50,10 +50,15 @@ function verifyStripeSignature(
 type StripeCheckoutSession = {
   id?: string;
   metadata?: Record<string, string> | null;
+  customer_email?: string | null;
+  customer_details?: { email?: string | null } | null;
+  amount_total?: number | null;
+  currency?: string | null;
   line_items?: {
     data?: Array<{ price?: { id?: string } | null }>;
   } | null;
 };
+
 
 type StripeEvent = {
   type?: string;
