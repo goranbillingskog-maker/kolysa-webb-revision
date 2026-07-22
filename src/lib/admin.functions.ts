@@ -3,10 +3,8 @@ import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { z } from "zod";
 import { computeLadderStatus, type LadderStatus } from "./ladder-config";
 
-async function assertAdmin(context: {
-  supabase: { rpc: (name: string, args: Record<string, unknown>) => Promise<{ data: unknown; error: unknown }> };
-  userId: string;
-}) {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function assertAdmin(context: any) {
   const { data, error } = await context.supabase.rpc("has_role", {
     _user_id: context.userId,
     _role: "admin",
@@ -14,6 +12,7 @@ async function assertAdmin(context: {
   if (error) throw new Error("Kunde inte verifiera behörighet");
   if (!data) throw new Error("Åtkomst nekad");
 }
+
 
 export type ProcessedOrderRow = {
   order_id: string;
