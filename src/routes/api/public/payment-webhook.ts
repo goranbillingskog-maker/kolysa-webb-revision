@@ -147,9 +147,33 @@ export const Route = createFileRoute("/api/public/payment-webhook")({
           "@/integrations/supabase/client.server"
         );
 
+        const { data: currentLadder } = await supabaseAdmin
+          .from("ladder_state")
+          .select("orders_count")
+          .eq("id", 1)
+          .maybeSingle();
+        const nextStep = (currentLadder?.orders_count ?? 0) + 1;
+
+        const customerEmail =
+          session?.customer_details?.email ?? session?.customer_email ?? null;
+        const websiteUrl = session?.metadata?.website_url ?? null;
+        const companyName = session?.metadata?.company_name ?? null;
+        const packageSlug = session?.metadata?.package_slug ?? "rapport";
+
         const { error: insertErr } = await supabaseAdmin
           .from("processed_orders")
-          .insert({ order_id: sessionId });
+          .insert({
+            order_id: sessionId,
+            customer_email: customerEmail,
+            website_url: websiteUrl,
+            company_name: companyName,
+            package_slug: packageSlug,
+            amount_total: session?.amount_total ?? null,
+            currency: session?.currency ?? null,
+            ladder_step: nextStep,
+            status: "ny",
+          });
+
 
         if (insertErr) {
           if ((insertErr as { code?: string }).code === "23505") {
