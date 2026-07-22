@@ -220,9 +220,11 @@ function Index() {
               </h2>
               <div className="prose-measure mt-5 space-y-4 text-[15px] text-ink/85">
                 <p>
-                  Jag har byggt och driftat hemsidor för småföretag sedan 1996. När jag
-                  granskar din sajt läser jag den som en riktig besökare, öppnar den på
-                  min telefon, testar formulären och tittar under huven på det tekniska.
+                  Jag har byggt och driftat hemsidor för företag sedan 1996. Då för
+                  företag som Fedex och IBM i USA, nu för mindre företag i Sverige.
+                  När jag granskar din sajt läser jag den som en riktig besökare,
+                  öppnar den på min telefon, testar formulären och tittar under huven
+                  på det tekniska.
                 </p>
                 <p>
                   Du får en rapport skriven av mig, inte en automatisk PDF. Om jag hittar
