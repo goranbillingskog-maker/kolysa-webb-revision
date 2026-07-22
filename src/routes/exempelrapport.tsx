@@ -159,6 +159,8 @@ function ReportIframe({ html }: { html: string }) {
 }
 
 function StaticReport() {
+  return (
+
 
     <section className="mx-auto max-w-4xl px-5 sm:px-8">
       <article className="rounded-[6px] border border-rule bg-paper p-6 sm:p-10">
