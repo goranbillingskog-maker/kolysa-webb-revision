@@ -20,15 +20,30 @@ function createPublishableClient() {
   });
 }
 
-function renderMarkdown(content: string): string {
+function isFullHtmlDocument(content: string): boolean {
+  const trimmed = content.trim().toLowerCase();
+  return trimmed.startsWith("<!doctype") || trimmed.startsWith("<html");
+}
+
+function renderContent(content: string): string {
+  if (!content.trim()) return "";
+  if (isFullHtmlDocument(content)) return content;
   return marked.parse(content, { gfm: true }) as string;
 }
+
+export type ReportFormat = "html" | "markdown" | "empty";
 
 export type ReportContent = {
   content: string;
   html: string;
+  format: ReportFormat;
   updated_at: string | null;
 };
+
+function detectFormat(content: string): ReportFormat {
+  if (!content.trim()) return "empty";
+  return isFullHtmlDocument(content) ? "html" : "markdown";
+}
 
 export const getReportContent = createServerFn({ method: "GET" }).handler(
   async (): Promise<ReportContent> => {
@@ -42,14 +57,15 @@ export const getReportContent = createServerFn({ method: "GET" }).handler(
     const content = data?.content ?? "";
     return {
       content,
-      html: renderMarkdown(content),
+      html: renderContent(content),
+      format: detectFormat(content),
       updated_at: data?.updated_at ?? null,
     };
   },
 );
 
 const saveSchema = z.object({
-  content: z.string().max(50000),
+  content: z.string().max(200000),
 });
 
 export const saveReportContent = createServerFn({ method: "POST" })
@@ -72,7 +88,8 @@ export const saveReportContent = createServerFn({ method: "POST" })
 
     return {
       content: row.content,
-      html: renderMarkdown(row.content),
+      html: renderContent(row.content),
+      format: detectFormat(row.content),
       updated_at: row.updated_at,
     };
   });

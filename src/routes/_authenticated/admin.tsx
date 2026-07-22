@@ -530,10 +530,16 @@ function ReportEditorSection({
     }
   }, [report?.content, report?.updated_at]);
 
+  const isFullHtml = useMemo(() => {
+    const t = draft.trim().toLowerCase();
+    return t.startsWith("<!doctype") || t.startsWith("<html");
+  }, [draft]);
+
   const previewHtml = useMemo(
-    () => marked.parse(draft, { gfm: true }) as string,
-    [draft],
+    () => (isFullHtml ? draft : (marked.parse(draft, { gfm: true }) as string)),
+    [draft, isFullHtml],
   );
+
 
   const saveMutation = useMutation({
     mutationFn: (content: string) => saveReportContent({ data: { content } }),
@@ -587,12 +593,15 @@ function ReportEditorSection({
             onChange={(e) => setDraft(e.target.value)}
             rows={24}
             className="w-full flex-1 rounded border border-rule bg-paper px-3 py-2 font-mono text-sm leading-relaxed"
-            placeholder="# Måleri Exempel AB..."
+            placeholder="Klistra in Markdown eller ett helt HTML-dokument (<!DOCTYPE html>…)"
           />
           <div className="flex items-center justify-between gap-3">
             <p className="text-xs text-subtle">
-              Du kan använda Markdown för rubriker, listor och fetstil.
+              {isFullHtml
+                ? "Läge: fullständigt HTML-dokument (renderas i isolerad iframe)."
+                : "Läge: Markdown. Klistra in ett helt HTML-dokument om du hellre vill det."}
             </p>
+
             <button
               onClick={() => saveMutation.mutate(draft)}
               disabled={saveMutation.isPending}
@@ -607,12 +616,22 @@ function ReportEditorSection({
           <p className="text-xs uppercase tracking-wide text-subtle">
             Förhandsvisning
           </p>
-          <div className="flex-1 overflow-y-auto rounded-[6px] border border-rule bg-paper p-6">
-            <article
-              className="report-body"
-              dangerouslySetInnerHTML={{ __html: previewHtml }}
-            />
+          <div className="flex-1 overflow-hidden rounded-[6px] border border-rule bg-paper">
+            {isFullHtml ? (
+              <iframe
+                title="Förhandsvisning"
+                sandbox="allow-same-origin"
+                srcDoc={previewHtml}
+                className="h-[600px] w-full bg-white"
+              />
+            ) : (
+              <article
+                className="report-body p-6"
+                dangerouslySetInnerHTML={{ __html: previewHtml }}
+              />
+            )}
           </div>
+
         </div>
       </div>
     </section>
