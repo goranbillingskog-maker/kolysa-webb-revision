@@ -3,20 +3,11 @@ import { useState, type FormEvent } from "react";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { PACKAGES, type PackageId } from "@/components/package-card";
-
-// ---------------------------------------------------------------------------
-// Lemon Squeezy checkout-länkar. Klistra in de skarpa URL:erna här när de
-// finns – ingenting annat behöver ändras.
-// ---------------------------------------------------------------------------
-const PAYMENT_URL_REPORT = "https://example.lemonsqueezy.com/checkout/rapport";
-const PAYMENT_URL_PLUS = "https://example.lemonsqueezy.com/checkout/rapport-plus-genomgang";
-const PAYMENT_URL_MONITOR = "https://example.lemonsqueezy.com/checkout/manadsovervakning";
-
-const PAYMENT_URLS: Record<PackageId, string> = {
-  report: PAYMENT_URL_REPORT,
-  plus: PAYMENT_URL_PLUS,
-  monitor: PAYMENT_URL_MONITOR,
-};
+import { getLadderStatus } from "@/lib/ladder.functions";
+import {
+  MONITOR_PAYMENT_LINK,
+  PLUS_PAYMENT_LINK,
+} from "@/lib/ladder-config";
 
 type Search = { paket?: PackageId };
 
@@ -26,6 +17,7 @@ export const Route = createFileRoute("/bestall")({
     if (p === "report" || p === "plus" || p === "monitor") return { paket: p };
     return {};
   },
+  loader: () => getLadderStatus(),
   head: () => ({
     meta: [
       { title: "Beställ granskning av din hemsida – Kolysa" },
@@ -47,14 +39,31 @@ export const Route = createFileRoute("/bestall")({
   component: BestallPage,
 });
 
+function formatKr(n: number): string {
+  return `${n.toLocaleString("sv-SE")} kr`;
+}
+
 function BestallPage() {
   const { paket } = Route.useSearch();
+  const ladderStatus = Route.useLoaderData();
   const [selected, setSelected] = useState<PackageId>(paket ?? "plus");
+
+  const paymentUrls: Record<PackageId, string> = {
+    report: ladderStatus.payment_link,
+    plus: PLUS_PAYMENT_LINK,
+    monitor: MONITOR_PAYMENT_LINK,
+  };
 
   function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    // Ingen backend – vi skickar bara vidare kunden till betalning.
-    window.location.href = PAYMENT_URLS[selected];
+    window.location.href = paymentUrls[selected];
+  }
+
+  function priceFor(id: PackageId, defaultPrice: string): string {
+    if (id === "report" && ladderStatus.campaign_active) {
+      return formatKr(ladderStatus.current_price);
+    }
+    return defaultPrice;
   }
 
   return (
@@ -72,6 +81,16 @@ function BestallPage() {
             Fyll i webbadressen till sajten du vill att jag granskar. Rapporten är i din
             mejl inom 24 timmar (vardagar).
           </p>
+          {ladderStatus.campaign_active && (
+            <p className="mt-4 rounded-[6px] border border-primary/30 bg-primary/[0.05] px-4 py-3 text-[14px] text-ink">
+              <span className="font-medium">Pris just nu:</span>{" "}
+              <span className="tabular-nums">
+                {formatKr(ladderStatus.current_price)}
+              </span>{" "}
+              (rapport #{ladderStatus.current_step} av{" "}
+              {ladderStatus.total_steps} i lanseringskampanjen)
+            </p>
+          )}
         </section>
 
         <section className="mx-auto max-w-3xl px-5 pb-24 sm:px-8">
@@ -104,7 +123,7 @@ function BestallPage() {
                         <p className="mt-1 text-sm text-subtle">{p.tagline}</p>
                       </div>
                       <p className="shrink-0 font-serif text-lg tabular-nums text-ink">
-                        {p.price}
+                        {priceFor(p.id, p.price)}
                       </p>
                     </label>
                   );

@@ -5,8 +5,10 @@ import { UnderlineSquiggle } from "@/components/underline-squiggle";
 import { Portrait } from "@/components/portrait";
 import { Signature } from "@/components/signature";
 import { PackageCard, PACKAGES } from "@/components/package-card";
+import { getLadderStatus } from "@/lib/ladder.functions";
 
 export const Route = createFileRoute("/")({
+  loader: () => getLadderStatus(),
   head: () => ({
     meta: [
       { title: "Kolysa – Manuell granskning av din hemsida på 24 timmar" },
@@ -78,6 +80,7 @@ const STEPS = [
 ];
 
 function Index() {
+  const ladderStatus = Route.useLoaderData();
   return (
     <div className="min-h-screen bg-paper">
       <SiteHeader />
@@ -199,7 +202,7 @@ function Index() {
             </div>
             <div className="mt-10 grid gap-6 md:grid-cols-3">
               {PACKAGES.map((p) => (
-                <PackageCard key={p.id} pkg={p} />
+                <PackageCard key={p.id} pkg={p} ladderStatus={ladderStatus} />
               ))}
             </div>
           </div>

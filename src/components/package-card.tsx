@@ -1,4 +1,5 @@
 import { Link } from "@tanstack/react-router";
+import type { LadderStatus } from "@/lib/ladder-config";
 
 export type PackageId = "report" | "plus" | "monitor";
 
@@ -49,7 +50,56 @@ export const PACKAGES: PackageInfo[] = [
   },
 ];
 
-export function PackageCard({ pkg }: { pkg: PackageInfo }) {
+function LadderProgress({
+  step,
+  total,
+}: {
+  step: number;
+  total: number;
+}) {
+  return (
+    <div
+      className="mt-4 flex gap-1.5"
+      role="progressbar"
+      aria-valuemin={0}
+      aria-valuemax={total}
+      aria-valuenow={step - 1}
+      aria-label={`Rapport ${step} av ${total} i lanseringskampanjen`}
+    >
+      {Array.from({ length: total }).map((_, i) => {
+        const taken = i < step - 1;
+        const current = i === step - 1;
+        return (
+          <span
+            key={i}
+            className={`h-1.5 flex-1 rounded-full ${
+              taken
+                ? "bg-primary"
+                : current
+                  ? "bg-primary/50"
+                  : "bg-ink/10"
+            }`}
+          />
+        );
+      })}
+    </div>
+  );
+}
+
+function formatKr(n: number): string {
+  return `${n.toLocaleString("sv-SE")} kr`;
+}
+
+export function PackageCard({
+  pkg,
+  ladderStatus,
+}: {
+  pkg: PackageInfo;
+  ladderStatus?: LadderStatus | null;
+}) {
+  const showCampaign =
+    pkg.id === "report" && ladderStatus?.campaign_active === true;
+
   return (
     <article
       className={`flex h-full flex-col rounded-[6px] border p-6 ${
@@ -64,8 +114,48 @@ export function PackageCard({ pkg }: { pkg: PackageInfo }) {
           </span>
         )}
       </div>
-      <p className="mt-3 font-serif text-3xl text-ink">{pkg.price}</p>
-      <p className="mt-2 text-sm text-subtle">{pkg.tagline}</p>
+
+      {showCampaign && ladderStatus ? (
+        <div className="mt-3">
+          <p className="text-[11px] font-medium uppercase tracking-[0.16em] text-primary">
+            Lanseringskampanj
+          </p>
+          <p className="mt-2 font-serif text-2xl leading-tight text-ink">
+            Rapport #{ladderStatus.current_step} av {ladderStatus.total_steps}{" "}
+            kostar just nu{" "}
+            <span className="tabular-nums">
+              {formatKr(ladderStatus.current_price)}
+            </span>
+          </p>
+          <p className="mt-2 text-sm text-subtle">
+            Nästa beställning:{" "}
+            <span className="tabular-nums">
+              {ladderStatus.next_price !== null
+                ? formatKr(ladderStatus.next_price)
+                : formatKr(795)}
+            </span>
+            . Därefter ordinarie pris 795 kr.
+          </p>
+          <LadderProgress
+            step={ladderStatus.current_step}
+            total={ladderStatus.total_steps}
+          />
+          <p className="mt-4 text-[13px] italic text-ink/75">
+            Varför? De första kunderna hjälper mig visa vad Kolysa går för — i
+            utbyte får du rapporten till en bråkdel av priset.
+          </p>
+          <p className="mt-3 text-[12px] text-subtle">
+            Kampanjpriset förutsätter att jag får använda din granskning som
+            anonymiserat exempel.
+          </p>
+        </div>
+      ) : (
+        <>
+          <p className="mt-3 font-serif text-3xl text-ink">{pkg.price}</p>
+          <p className="mt-2 text-sm text-subtle">{pkg.tagline}</p>
+        </>
+      )}
+
       <ul className="mt-5 space-y-2 text-[15px] text-ink">
         {pkg.features.map((f) => (
           <li key={f} className="grid grid-cols-[auto_minmax(0,1fr)] gap-3">
