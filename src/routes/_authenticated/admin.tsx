@@ -169,6 +169,11 @@ function AdminPage() {
         />
       </section>
 
+      <ReportEditorSection
+        report={reportQuery.data}
+        isLoading={reportQuery.isLoading}
+        onSaved={refresh}
+      />
       <OrdersSection orders={data.orders} onChanged={refresh} />
       <CustomersSection customers={data.customers} onChanged={refresh} />
     </main>
