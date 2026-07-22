@@ -80,6 +80,7 @@ const STEPS = [
 ];
 
 function Index() {
+  const ladderStatus = Route.useLoaderData();
   return (
     <div className="min-h-screen bg-paper">
       <SiteHeader />
