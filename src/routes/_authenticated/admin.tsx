@@ -93,7 +93,11 @@ function AdminPage() {
     );
   }
 
-  const refresh = () => router.invalidate() && query.refetch();
+  const refresh = () => {
+    router.invalidate();
+    query.refetch();
+  };
+
 
   return (
     <main className="mx-auto max-w-6xl px-6 py-10">
