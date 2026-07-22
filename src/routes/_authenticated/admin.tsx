@@ -340,7 +340,7 @@ function CustomersSection({
               <Th>Status</Th>
               <Th>Källa</Th>
               <Th>Skapad</Th>
-              <Th></Th>
+              <Th> </Th>
             </tr>
           </thead>
           <tbody>
