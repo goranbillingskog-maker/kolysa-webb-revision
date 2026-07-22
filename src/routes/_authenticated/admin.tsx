@@ -1,6 +1,6 @@
 import { createFileRoute, useNavigate, useRouter, Link, redirect } from "@tanstack/react-router";
-import { useState, useMemo } from "react";
-import { useQuery, useMutation, useSuspenseQuery } from "@tanstack/react-query";
+import { useState, useMemo, useEffect } from "react";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { marked } from "marked";
 import { supabase } from "@/integrations/supabase/client";
 import {
