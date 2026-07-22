@@ -5,8 +5,10 @@ import { UnderlineSquiggle } from "@/components/underline-squiggle";
 import { Portrait } from "@/components/portrait";
 import { Signature } from "@/components/signature";
 import { PackageCard, PACKAGES } from "@/components/package-card";
+import { getLadderStatus } from "@/lib/ladder.functions";
 
 export const Route = createFileRoute("/")({
+  loader: () => getLadderStatus(),
   head: () => ({
     meta: [
       { title: "Kolysa – Manuell granskning av din hemsida på 24 timmar" },
