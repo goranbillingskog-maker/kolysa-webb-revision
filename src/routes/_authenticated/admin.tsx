@@ -59,6 +59,11 @@ function AdminPage() {
     queryFn: () => getAdminOverview(),
   });
 
+  const reportQuery = useQuery({
+    queryKey: ["report-content"],
+    queryFn: () => getReportContent(),
+  });
+
   async function signOut() {
     await supabase.auth.signOut();
     navigate({ to: "/auth", replace: true });
