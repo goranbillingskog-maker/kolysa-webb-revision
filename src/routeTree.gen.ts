@@ -9,8 +9,26 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as TackRouteImport } from './routes/tack'
+import { Route as ExempelrapportRouteImport } from './routes/exempelrapport'
+import { Route as BestallRouteImport } from './routes/bestall'
 import { Route as IndexRouteImport } from './routes/index'
 
+const TackRoute = TackRouteImport.update({
+  id: '/tack',
+  path: '/tack',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ExempelrapportRoute = ExempelrapportRouteImport.update({
+  id: '/exempelrapport',
+  path: '/exempelrapport',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const BestallRoute = BestallRouteImport.update({
+  id: '/bestall',
+  path: '/bestall',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -19,28 +37,61 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/bestall': typeof BestallRoute
+  '/exempelrapport': typeof ExempelrapportRoute
+  '/tack': typeof TackRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/bestall': typeof BestallRoute
+  '/exempelrapport': typeof ExempelrapportRoute
+  '/tack': typeof TackRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/bestall': typeof BestallRoute
+  '/exempelrapport': typeof ExempelrapportRoute
+  '/tack': typeof TackRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths: '/' | '/bestall' | '/exempelrapport' | '/tack'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/bestall' | '/exempelrapport' | '/tack'
+  id: '__root__' | '/' | '/bestall' | '/exempelrapport' | '/tack'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BestallRoute: typeof BestallRoute
+  ExempelrapportRoute: typeof ExempelrapportRoute
+  TackRoute: typeof TackRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/tack': {
+      id: '/tack'
+      path: '/tack'
+      fullPath: '/tack'
+      preLoaderRoute: typeof TackRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/exempelrapport': {
+      id: '/exempelrapport'
+      path: '/exempelrapport'
+      fullPath: '/exempelrapport'
+      preLoaderRoute: typeof ExempelrapportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/bestall': {
+      id: '/bestall'
+      path: '/bestall'
+      fullPath: '/bestall'
+      preLoaderRoute: typeof BestallRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -53,17 +104,10 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BestallRoute: BestallRoute,
+  ExempelrapportRoute: ExempelrapportRoute,
+  TackRoute: TackRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
