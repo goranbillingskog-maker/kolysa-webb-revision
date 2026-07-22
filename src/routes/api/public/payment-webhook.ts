@@ -183,21 +183,16 @@ export const Route = createFileRoute("/api/public/payment-webhook")({
           return new Response("DB error", { status: 500 });
         }
 
-        const { data: current } = await supabaseAdmin
-          .from("ladder_state")
-          .select("orders_count")
-          .eq("id", 1)
-          .single();
-
         const { data: updated, error: updateErr } = await supabaseAdmin
           .from("ladder_state")
           .update({
-            orders_count: (current?.orders_count ?? 0) + 1,
+            orders_count: nextStep,
             updated_at: new Date().toISOString(),
           })
           .eq("id", 1)
           .select("orders_count")
           .single();
+
 
         if (updateErr) {
           console.error("ladder_state update failed", updateErr);
