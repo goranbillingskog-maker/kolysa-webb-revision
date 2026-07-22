@@ -523,6 +523,13 @@ function ReportEditorSection({
   );
   const [message, setMessage] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (report) {
+      setDraft(report.content);
+      setSavedAt(report.updated_at);
+    }
+  }, [report?.content, report?.updated_at]);
+
   const previewHtml = useMemo(
     () => marked.parse(draft, { gfm: true }) as string,
     [draft],
