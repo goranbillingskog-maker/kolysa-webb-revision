@@ -64,13 +64,11 @@ function ExempelrapportPage() {
             Exempelrapport
           </p>
           <h1 className="mt-4 font-serif text-4xl leading-[1.1] text-ink sm:text-5xl">
-            Så här ser rapporten ut.
+            Så här kommer din rapport att se ut.
           </h1>
           <div className="prose-measure mt-6 space-y-4 text-[17px] text-ink/85">
             <p>
-              Här är en förkortad version av en rapport jag skrivit åt ett fiktivt
-              måleri­företag. En riktig rapport är längre – men strukturen och tonen är
-              exakt den här.
+              Här är en rapport jag skrivit åt ett fiktivt företag.
             </p>
             <p>
               Ingen automatgenererad text. Om jag skriver att något är kritiskt är det
