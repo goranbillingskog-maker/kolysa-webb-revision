@@ -122,7 +122,7 @@ function Index() {
                 <div className="md:mr-6">
                   <Portrait size={220} />
                 </div>
-                <figcaption className="max-w-[16rem] text-sm text-subtle md:text-right">
+                <figcaption className="max-w-[16rem] text-center text-sm text-subtle">
                   Göran Billingskog, grundare. Konsult sedan 2007. Ingen byrå, ingen
                   säljavdelning.
                 </figcaption>
