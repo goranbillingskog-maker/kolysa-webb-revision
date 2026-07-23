@@ -12,7 +12,7 @@ export function Portrait({ size = 220 }: { size?: number }) {
       height={size}
       loading="lazy"
       decoding="async"
-      style={{ width: size, height: size }}
+      style={{ width: size, height: size, objectPosition: "50% 25%" }}
       className="block rounded-full object-cover ring-1 ring-[oklch(0.42_0.09_155)]"
     />
   );
