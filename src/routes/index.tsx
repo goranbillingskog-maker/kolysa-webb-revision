@@ -97,9 +97,9 @@ function Index() {
                 <UnderlineSquiggle>faktiskt</UnderlineSquiggle> behöver fixas.
               </h1>
               <p className="prose-measure mt-6 text-lg text-ink/80">
-                En manuell genomgång av en riktig människa. Du får en rapport med betyg
-                inom sju områden och konkreta åtgärder i prioritetsordning – i mejlen
-                inom 24 timmar.
+                AI-driven analys, granskad av en riktig människa. Du får en rapport
+                med betyg inom sju områden och konkreta åtgärder i prioritetsordning
+                – i mejlen inom 24 timmar.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-5">
                 <Link
