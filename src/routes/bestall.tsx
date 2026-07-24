@@ -24,13 +24,13 @@ export const Route = createFileRoute("/bestall")({
       {
         name: "description",
         content:
-          "Beställ en manuell granskning av din hemsida. Rapport med betyg och åtgärder inom 24 timmar.",
+          "Beställ en webb-revision: en AI analyserar sajten, jag granskar och prioriterar. Rapport med betyg och åtgärder i mejlen inom 24 timmar.",
       },
       { property: "og:title", content: "Beställ granskning – Kolysa" },
       {
         property: "og:description",
         content:
-          "En manuell webb-revision av Göran Billingskog. Rapport med betyg och åtgärder inom 24 timmar.",
+          "AI-driven analys av din hemsida, granskad och prioriterad av Göran Billingskog innan rapporten skickas. Levereras inom 24 timmar.",
       },
       { property: "og:url", content: "/bestall" },
     ],
