@@ -33,7 +33,7 @@ export const PACKAGES: PackageInfo[] = [
     features: [
       "Allt i Rapport",
       "30 min videomöte med mig",
-      "Svar på uppföljande frågor via mejl i två veckor",
+      "Prioriterad åtgärdslista",
     ],
     featured: true,
   },
