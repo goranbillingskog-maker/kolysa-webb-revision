@@ -24,13 +24,13 @@ export const Route = createFileRoute("/bestall")({
       {
         name: "description",
         content:
-          "Beställ en manuell granskning av din hemsida. Rapport med betyg och åtgärder inom 24 timmar.",
+          "Beställ en webb-revision: en AI analyserar sajten, jag granskar och prioriterar. Rapport med betyg och åtgärder i mejlen inom 24 timmar.",
       },
       { property: "og:title", content: "Beställ granskning – Kolysa" },
       {
         property: "og:description",
         content:
-          "En manuell webb-revision av Göran Billingskog. Rapport med betyg och åtgärder inom 24 timmar.",
+          "AI-driven analys av din hemsida, granskad och prioriterad av Göran Billingskog innan rapporten skickas. Levereras inom 24 timmar.",
       },
       { property: "og:url", content: "/bestall" },
     ],
@@ -78,8 +78,9 @@ function BestallPage() {
             Beställ din granskning.
           </h1>
           <p className="prose-measure mt-5 text-[17px] text-ink/85">
-            Fyll i webbadressen till sajten du vill att jag granskar. Rapporten är i din
-            mejl inom 24 timmar (vardagar).
+            Fyll i webbadressen till sajten. En AI kör igång analysen, sedan
+            granskar och prioriterar jag resultatet innan rapporten skickas –
+            i din mejl inom 24 timmar (vardagar).
           </p>
           {ladderStatus.campaign_active && (
             <p className="mt-4 rounded-[6px] border border-primary/30 bg-primary/[0.05] px-4 py-3 text-[14px] text-ink">
@@ -174,8 +175,9 @@ function BestallPage() {
 
             <div className="flex flex-col gap-4 border-t border-rule pt-6 sm:flex-row sm:items-center sm:justify-between">
               <p className="max-w-sm text-sm text-subtle">
-                Du betalar säkert med kort. Rapporten levereras av mig personligen inom
-                24 timmar.
+                Du betalar säkert med kort. AI:n startar analysen direkt – sedan
+                granskar och godkänner jag rapporten personligen innan den
+                skickas, inom 24 timmar.
               </p>
               <button
                 type="submit"

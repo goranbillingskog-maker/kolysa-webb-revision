@@ -10,12 +10,12 @@ export const Route = createFileRoute("/tack")({
       { name: "robots", content: "noindex" },
       {
         name: "description",
-        content: "Tack för din beställning. Din rapport levereras inom 24 timmar.",
+        content: "Tack för din beställning. AI:n startar analysen – jag granskar och skickar rapporten inom 24 timmar.",
       },
       { property: "og:title", content: "Tack för din beställning – Kolysa" },
       {
         property: "og:description",
-        content: "Din rapport levereras till din mejl inom 24 timmar (vardagar).",
+        content: "AI:n har startat analysen. Jag granskar, prioriterar och skickar rapporten till din mejl inom 24 timmar (vardagar).",
       },
       { property: "og:url", content: "/tack" },
     ],
@@ -37,8 +37,10 @@ function TackPage() {
         </h1>
         <div className="prose-measure mt-6 space-y-4 text-[17px] text-ink/85">
           <p>
-            Din rapport levereras till din mejl inom 24 timmar (vardagar). Om jag hittar
-            något akut hör jag av mig direkt.
+            AI:n har börjat analysera din sajt. Jag går igenom resultatet,
+            prioriterar det som faktiskt spelar roll och skickar rapporten till
+            din mejl inom 24 timmar (vardagar). Hittar jag något akut hör jag
+            av mig direkt.
           </p>
         </div>
         <Signature className="mt-6 text-xl" />
