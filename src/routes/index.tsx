@@ -70,7 +70,7 @@ const STEPS = [
   {
     n: "02",
     title: "Jag granskar",
-    body: "Jag går igenom sajten manuellt inom 24 timmar (vardagar). Ingen bot, ingen mall – bara jag.",
+    body: "En AI analyserar sajten mot alla sju områden – sedan går jag igenom resultatet, sållar bort bruset och prioriterar det som faktiskt spelar roll för ditt företag. Klart inom 24 timmar (vardagar).",
   },
   {
     n: "03",
@@ -97,9 +97,9 @@ function Index() {
                 <UnderlineSquiggle>faktiskt</UnderlineSquiggle> behöver fixas.
               </h1>
               <p className="prose-measure mt-6 text-lg text-ink/80">
-                En manuell genomgång av en riktig människa. Du får en rapport med betyg
-                inom sju områden och konkreta åtgärder i prioritetsordning – i mejlen
-                inom 24 timmar.
+                AI-driven analys, granskad av en riktig människa. Du får en rapport
+                med betyg inom sju områden och konkreta åtgärder i prioritetsordning
+                – i mejlen inom 24 timmar.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-5">
                 <Link
@@ -139,7 +139,7 @@ function Index() {
                 Så går det till
               </p>
               <h2 className="mt-4 font-serif text-3xl text-ink sm:text-4xl">
-                Tre steg. Ingen krångel.
+                Tre steg. Inget krångel.
               </h2>
             </div>
             <ol className="md:col-span-8 md:grid md:grid-cols-3 md:gap-8">
@@ -196,8 +196,9 @@ function Index() {
                 Välj det som passar dig.
               </h2>
               <p className="mt-4 text-[15px] text-subtle">
-                Alla paket börjar med samma manuella granskning. Skillnaden är hur mycket
-                du vill följa upp efteråt.
+                Alla paket börjar med samma granskning: en AI-analys som jag går igenom
+                och prioriterar personligen. Skillnaden är hur mycket du vill följa upp
+                efteråt.
               </p>
             </div>
             <div className="mt-10 grid gap-6 md:grid-cols-3">
@@ -219,20 +220,26 @@ function Index() {
                 Om mig
               </p>
               <h2 className="mt-4 font-serif text-3xl text-ink sm:text-4xl">
-                Jag heter Göran och gör det här själv.
+                Jag heter Göran och står bakom varje rapport själv.
               </h2>
               <div className="prose-measure mt-5 space-y-4 text-[15px] text-ink/85">
                 <p>
                   Jag har byggt och driftat hemsidor för företag sedan 1996. Då för
-                  företag som Fedex och IBM i USA, nu för mindre företag i Sverige.
-                  När jag granskar din sajt läser jag den som en riktig besökare,
-                  öppnar den på min telefon, testar formulären och tittar under huven
-                  på det tekniska.
+                  företag som FedEx och IBM i USA, nu för mindre företag i Sverige.
                 </p>
                 <p>
-                  Du får en rapport skriven av mig, inte en automatisk PDF. Om jag hittar
-                  något jag inte förstår skriver jag det också – och säger vad jag skulle
-                  fråga en utvecklare om.
+                  När din sajt granskas kör jag den genom en AI som synar det tekniska
+                  mot dussintals kriterier – snabbare och mer konsekvent än vad någon
+                  hinner för hand. Sedan tar jag vid: jag läser sidan som en riktig
+                  besökare gör, öppnar den i mobilen och bedömer det en maskin inte
+                  fångar – om budskapet landar och om någon faktiskt vill höra av sig.
+                </p>
+                <p>
+                  Du får en rapport som jag har gått igenom och står för – inte en
+                  maskinutskrift som skickas oläst. AI:n hittar och mäter; jag avgör
+                  vad som är viktigast för just ditt företag och skriver åtgärderna i
+                  klartext. Hittar jag något jag är osäker på säger jag det också – och
+                  vad jag skulle fråga en utvecklare om.
                 </p>
               </div>
               <Signature className="mt-6 text-xl" />

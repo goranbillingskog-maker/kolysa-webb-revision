@@ -19,10 +19,10 @@ export const PACKAGES: PackageInfo[] = [
     price: "795 kr",
     tagline: "Skriftlig granskning levererad inom 24 timmar.",
     features: [
-      "Manuell granskning av sju områden",
-      "Betyg och totalpoäng",
-      "Konkreta åtgärder i prioritetsordning",
-      "PDF till din mejl",
+      "AI-analys av startsidan, granskad av mig",
+      "Betyg inom sju områden",
+      "PDF-rapport via mejl",
+      "Leverans inom 24 timmar (vardagar)",
     ],
   },
   {
@@ -33,7 +33,7 @@ export const PACKAGES: PackageInfo[] = [
     features: [
       "Allt i Rapport",
       "30 min videomöte med mig",
-      "Svar på uppföljande frågor via mejl i två veckor",
+      "Prioriterad åtgärdslista",
     ],
     featured: true,
   },
