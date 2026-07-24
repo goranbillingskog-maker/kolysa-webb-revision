@@ -22,13 +22,13 @@ export const Route = createFileRoute("/exempelrapport")({
       {
         name: "description",
         content:
-          "Se exakt vad du får: en riktig exempelrapport med betyg inom sju områden och konkreta rekommendationer.",
+          "Se exakt vad du får: en exempelrapport från en AI-analys som jag granskar och prioriterar innan den skickas. Betyg inom sju områden och konkreta rekommendationer.",
       },
       { property: "og:title", content: "Exempelrapport – Kolysa" },
       {
         property: "og:description",
         content:
-          "En riktig exempelrapport från en manuell webb-revision. Betyg, findings och åtgärder.",
+          "En exempelrapport från en webb-revision: AI-driven analys, granskad av mig innan den skickas.",
       },
       { property: "og:url", content: "/exempelrapport" },
     ],
@@ -68,11 +68,13 @@ function ExempelrapportPage() {
           </h1>
           <div className="prose-measure mt-6 space-y-4 text-[17px] text-ink/85">
             <p>
-              Här är en rapport jag skrivit åt ett fiktivt företag.&nbsp;
+              Här är en rapport för ett fiktivt företag. AI:n har analyserat sajten
+              mot alla sju områden – jag har sedan gått igenom fynden, prioriterat
+              det som faktiskt spelar roll och skrivit åtgärderna i klartext.
             </p>
             <p>
-              Ingen automatgenererad text. Om jag skriver att något är kritiskt är det
-              för att jag har testat det själv.
+              Om något står som kritiskt är det för att jag har bedömt det som
+              kritiskt – inte för att en maskin råkade flagga det.
             </p>
           </div>
           <Signature className="mt-5 text-lg" />
@@ -198,7 +200,8 @@ function StaticReport() {
           <p className="text-[15px] text-ink/80 md:pb-3">
             Solid grund, men flera brister i tillgänglighet och sidprestanda drar ner
             helhetsbetyget. Ingen enskild sak är katastrofal – det är summan av
-            småsaker.
+            småsaker. AI:n fångade det tekniska; det här är min sammanfattning av
+            vad som är värt att prioritera.
           </p>
         </div>
 
@@ -263,7 +266,8 @@ function StaticReport() {
         </div>
 
         <p className="mt-10 text-sm italic text-subtle">
-          (I den fullständiga rapporten går jag igenom alla sju områden på samma sätt.)
+          (I den fullständiga rapporten går jag igenom alla sju områden på samma sätt:
+          AI:n analyserar, jag prioriterar och står för slutsatserna.)
         </p>
       </article>
     </section>
