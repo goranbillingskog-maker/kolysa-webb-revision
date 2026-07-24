@@ -21,19 +21,18 @@ export function SiteFooter() {
         <div>
           <p className="text-xs font-medium uppercase tracking-wider text-subtle">Kontakt</p>
           <ul className="mt-3 space-y-2 text-sm text-ink">
-            <li>Göran Billingskog</li>
             <li>
               <a href="mailto:info@gorito.com" className="hover:text-primary">
                 info@gorito.com
               </a>
             </li>
-            <li className="text-subtle">Organisationsnummer: [FYLL I]</li>
+            <li className="text-subtle">Organisationsnummer: 559333-0227</li>
           </ul>
         </div>
       </div>
       <div className="border-t border-rule/70">
         <div className="mx-auto max-w-6xl px-5 py-5 text-xs text-subtle sm:px-8">
-          © {new Date().getFullYear()} Kolysa. Alla granskningar utförs personligen av Göran Billingskog.
+          © {new Date().getFullYear()} Kolysa. Varje rapport granskas och godkänns personligen av Göran Billingskog.
         </div>
       </div>
     </footer>
