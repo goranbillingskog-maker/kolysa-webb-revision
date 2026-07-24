@@ -11,17 +11,17 @@ export const Route = createFileRoute("/")({
   loader: () => getLadderStatus(),
   head: () => ({
     meta: [
-      { title: "Kolysa – Manuell granskning av din hemsida på 24 timmar" },
+      { title: "Kolysa – AI-driven webb-revision, granskad av mig på 24 timmar" },
       {
         name: "description",
         content:
-          "Beställ en manuell webb-revision av Göran Billingskog. Betyg, konkreta åtgärder och rapport i mejlen inom 24 timmar.",
+          "AI analyserar din hemsida – jag granskar, prioriterar och står för resultatet. Rapport med betyg och konkreta åtgärder i mejlen inom 24 timmar.",
       },
       { property: "og:title", content: "Kolysa – Webb-revision inom 24 timmar" },
       {
         property: "og:description",
         content:
-          "En personlig granskning av din företagshemsida. Rapport med betyg och åtgärder – levererad av mig personligen.",
+          "AI-driven analys av din företagshemsida, granskad och prioriterad av Göran Billingskog innan rapporten skickas.",
       },
       { property: "og:url", content: "/" },
     ],
