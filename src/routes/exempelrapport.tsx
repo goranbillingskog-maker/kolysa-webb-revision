@@ -200,7 +200,8 @@ function StaticReport() {
           <p className="text-[15px] text-ink/80 md:pb-3">
             Solid grund, men flera brister i tillgänglighet och sidprestanda drar ner
             helhetsbetyget. Ingen enskild sak är katastrofal – det är summan av
-            småsaker.
+            småsaker. AI:n fångade det tekniska; det här är min sammanfattning av
+            vad som är värt att prioritera.
           </p>
         </div>
 
