@@ -175,8 +175,9 @@ function BestallPage() {
 
             <div className="flex flex-col gap-4 border-t border-rule pt-6 sm:flex-row sm:items-center sm:justify-between">
               <p className="max-w-sm text-sm text-subtle">
-                Du betalar säkert med kort. Rapporten levereras av mig personligen inom
-                24 timmar.
+                Du betalar säkert med kort. AI:n startar analysen direkt – sedan
+                granskar och godkänner jag rapporten personligen innan den
+                skickas, inom 24 timmar.
               </p>
               <button
                 type="submit"
