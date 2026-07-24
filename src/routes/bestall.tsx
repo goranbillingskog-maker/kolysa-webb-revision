@@ -78,8 +78,9 @@ function BestallPage() {
             Beställ din granskning.
           </h1>
           <p className="prose-measure mt-5 text-[17px] text-ink/85">
-            Fyll i webbadressen till sajten du vill att jag granskar. Rapporten är i din
-            mejl inom 24 timmar (vardagar).
+            Fyll i webbadressen till sajten. En AI kör igång analysen, sedan
+            granskar och prioriterar jag resultatet innan rapporten skickas –
+            i din mejl inom 24 timmar (vardagar).
           </p>
           {ladderStatus.campaign_active && (
             <p className="mt-4 rounded-[6px] border border-primary/30 bg-primary/[0.05] px-4 py-3 text-[14px] text-ink">
