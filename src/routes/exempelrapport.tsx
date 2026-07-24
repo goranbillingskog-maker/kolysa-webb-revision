@@ -22,13 +22,13 @@ export const Route = createFileRoute("/exempelrapport")({
       {
         name: "description",
         content:
-          "Se exakt vad du får: en riktig exempelrapport med betyg inom sju områden och konkreta rekommendationer.",
+          "Se exakt vad du får: en exempelrapport från en AI-analys som jag granskar och prioriterar innan den skickas. Betyg inom sju områden och konkreta rekommendationer.",
       },
       { property: "og:title", content: "Exempelrapport – Kolysa" },
       {
         property: "og:description",
         content:
-          "En riktig exempelrapport från en manuell webb-revision. Betyg, findings och åtgärder.",
+          "En exempelrapport från en webb-revision: AI-driven analys, granskad av mig innan den skickas.",
       },
       { property: "og:url", content: "/exempelrapport" },
     ],
