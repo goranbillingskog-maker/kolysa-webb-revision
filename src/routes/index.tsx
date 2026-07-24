@@ -145,8 +145,10 @@ function Index() {
             <ol className="md:col-span-8 md:grid md:grid-cols-3 md:gap-8">
               {STEPS.map((s) => (
                 <li key={s.n} className="border-t border-ink/80 pt-5 [&+li]:mt-10 md:[&+li]:mt-0">
-                  <p className="font-serif text-sm tabular-nums text-primary">{s.n}</p>
-                  <h3 className="mt-2 font-serif text-xl text-ink">{s.title}</h3>
+                  <p className="font-serif text-5xl font-medium leading-none tabular-nums text-primary/90 sm:text-6xl">
+                    {s.n}
+                  </p>
+                  <h3 className="mt-3 font-serif text-xl text-ink">{s.title}</h3>
                   <p className="mt-2 text-[15px] text-subtle">{s.body}</p>
                 </li>
               ))}
