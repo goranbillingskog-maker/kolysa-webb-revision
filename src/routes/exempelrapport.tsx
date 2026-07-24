@@ -266,7 +266,8 @@ function StaticReport() {
         </div>
 
         <p className="mt-10 text-sm italic text-subtle">
-          (I den fullständiga rapporten går jag igenom alla sju områden på samma sätt.)
+          (I den fullständiga rapporten går jag igenom alla sju områden på samma sätt:
+          AI:n analyserar, jag prioriterar och står för slutsatserna.)
         </p>
       </article>
     </section>
