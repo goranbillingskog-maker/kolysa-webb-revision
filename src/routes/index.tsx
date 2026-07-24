@@ -196,8 +196,9 @@ function Index() {
                 Välj det som passar dig.
               </h2>
               <p className="mt-4 text-[15px] text-subtle">
-                Alla paket börjar med samma manuella granskning. Skillnaden är hur mycket
-                du vill följa upp efteråt.
+                Alla paket börjar med samma granskning: en AI-analys som jag går igenom
+                och prioriterar personligen. Skillnaden är hur mycket du vill följa upp
+                efteråt.
               </p>
             </div>
             <div className="mt-10 grid gap-6 md:grid-cols-3">
