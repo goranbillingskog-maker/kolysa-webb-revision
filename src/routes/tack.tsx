@@ -37,8 +37,10 @@ function TackPage() {
         </h1>
         <div className="prose-measure mt-6 space-y-4 text-[17px] text-ink/85">
           <p>
-            Din rapport levereras till din mejl inom 24 timmar (vardagar). Om jag hittar
-            något akut hör jag av mig direkt.
+            AI:n har börjat analysera din sajt. Jag går igenom resultatet,
+            prioriterar det som faktiskt spelar roll och skickar rapporten till
+            din mejl inom 24 timmar (vardagar). Hittar jag något akut hör jag
+            av mig direkt.
           </p>
         </div>
         <Signature className="mt-6 text-xl" />
