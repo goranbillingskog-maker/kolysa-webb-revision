@@ -5,9 +5,9 @@ export function SiteFooter() {
     <footer className="mt-24 border-t border-rule/70">
       <div className="mx-auto grid max-w-6xl gap-10 px-5 py-14 sm:px-8 md:grid-cols-3">
         <div>
-          <p className="font-serif text-xl text-ink">Kolysa</p>
+          <p className="font-serif text-xl text-ink">Kolysa.com</p>
           <p className="mt-3 max-w-xs text-sm text-subtle">
-            Manuell granskning av företagshemsidor. En rapport, en person, 24 timmar.
+            Webb-revision: AI-analys granskad av en riktig människa. En rapport, 24 timmar.
           </p>
         </div>
         <div>
