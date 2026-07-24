@@ -68,11 +68,13 @@ function ExempelrapportPage() {
           </h1>
           <div className="prose-measure mt-6 space-y-4 text-[17px] text-ink/85">
             <p>
-              Här är en rapport jag skrivit åt ett fiktivt företag.&nbsp;
+              Här är en rapport för ett fiktivt företag. AI:n har analyserat sajten
+              mot alla sju områden – jag har sedan gått igenom fynden, prioriterat
+              det som faktiskt spelar roll och skrivit åtgärderna i klartext.
             </p>
             <p>
-              Ingen automatgenererad text. Om jag skriver att något är kritiskt är det
-              för att jag har testat det själv.
+              Om något står som kritiskt är det för att jag har bedömt det som
+              kritiskt – inte för att en maskin råkade flagga det.
             </p>
           </div>
           <Signature className="mt-5 text-lg" />
