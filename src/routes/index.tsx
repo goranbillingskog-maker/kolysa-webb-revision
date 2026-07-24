@@ -70,7 +70,7 @@ const STEPS = [
   {
     n: "02",
     title: "Jag granskar",
-    body: "Jag går igenom sajten manuellt inom 24 timmar (vardagar). Ingen bot, ingen mall – bara jag.",
+    body: "En AI analyserar sajten mot alla sju områden – sedan går jag igenom resultatet, sållar bort bruset och prioriterar det som faktiskt spelar roll för ditt företag. Klart inom 24 timmar (vardagar).",
   },
   {
     n: "03",
