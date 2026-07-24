@@ -139,7 +139,7 @@ function Index() {
                 Så går det till
               </p>
               <h2 className="mt-4 font-serif text-3xl text-ink sm:text-4xl">
-                Tre steg. Ingen krångel.
+                Tre steg. Inget krångel.
               </h2>
             </div>
             <ol className="md:col-span-8 md:grid md:grid-cols-3 md:gap-8">
