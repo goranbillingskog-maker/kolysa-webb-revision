@@ -112,7 +112,7 @@ function Index() {
                   to="/exempelrapport"
                   className="text-sm font-medium text-ink underline decoration-primary decoration-2 underline-offset-4 hover:text-primary"
                 >
-                  Se en riktig exempelrapport
+                  Se en exempelrapport
                 </Link>
               </div>
             </div>
