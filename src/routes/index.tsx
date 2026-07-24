@@ -97,9 +97,9 @@ function Index() {
                 <UnderlineSquiggle>faktiskt</UnderlineSquiggle> behöver fixas.
               </h1>
               <p className="prose-measure mt-6 text-lg text-ink/80">
-                AI-driven analys, granskad av en riktig människa. Du får en rapport
-                med betyg inom sju områden och konkreta åtgärder i prioritetsordning
-                – i mejlen inom 24 timmar.
+                AI-driven analys, granskad av en riktig människa. Mej. Du får en
+                rapport med betyg inom sju områden och konkreta åtgärder i
+                prioritetsordning – i mejlen inom 24 timmar.
               </p>
               <div className="mt-8 flex flex-wrap items-center gap-5">
                 <Link
@@ -123,8 +123,8 @@ function Index() {
                   <Portrait size={220} />
                 </div>
                 <figcaption className="max-w-[16rem] text-center text-sm text-subtle">
-                  Göran Billingskog, grundare. Konsult sedan 2007. Ingen byrå, ingen
-                  säljavdelning.
+                  Göran Billingskog, grundare. Konsult sedan 1996. Ingen byrå,
+                  ingen säljavdelning.
                 </figcaption>
               </figure>
             </aside>
