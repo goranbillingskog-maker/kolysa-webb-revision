@@ -144,7 +144,10 @@ function Index() {
             </div>
             <ol className="md:col-span-8 md:grid md:grid-cols-3 md:gap-8">
               {STEPS.map((s) => (
-                <li key={s.n} className="border-t border-ink/80 pt-5 [&+li]:mt-10 md:[&+li]:mt-0">
+                <li
+                  key={s.n}
+                  className="relative border-t border-ink/80 pt-5 [&+li]:mt-10 md:[&+li]:mt-0 after:pointer-events-none after:absolute after:left-1/2 after:top-full after:h-10 after:w-px after:-translate-x-1/2 after:bg-primary/30 after:content-[''] last:after:hidden md:after:left-full md:after:top-[3.5rem] md:after:h-px md:after:w-8 md:after:translate-x-0"
+                >
                   <span className="inline-flex items-center justify-center border border-primary/40 px-3 pb-2.5 pt-2">
                     <span className="font-serif text-5xl font-medium leading-none tabular-nums text-primary/90 sm:text-6xl">
                       {s.n}
