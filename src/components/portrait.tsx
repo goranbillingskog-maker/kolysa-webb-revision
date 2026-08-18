@@ -1,4 +1,4 @@
-import goranAsset from "@/assets/goran.webp.asset.json";
+import goranImage from "@/assets/goran.webp";
 
 /**
  * Circular portrait of Göran Billingskog.
@@ -6,7 +6,7 @@ import goranAsset from "@/assets/goran.webp.asset.json";
 export function Portrait({ size = 220 }: { size?: number }) {
   return (
     <img
-      src={goranAsset.url}
+      src={goranImage}
       alt="Porträtt av Göran Billingskog, grundare av Kolysa"
       width={size}
       height={size}
@@ -17,3 +17,4 @@ export function Portrait({ size = 220 }: { size?: number }) {
     />
   );
 }
+

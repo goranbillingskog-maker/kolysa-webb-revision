@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
 import { PACKAGES, type PackageId } from "@/components/package-card";
 import { getLadderStatus } from "@/lib/ladder.functions";
+import { supabase } from "@/integrations/supabase/client";
 import {
   MONITOR_PAYMENT_LINK,
   PLUS_PAYMENT_LINK,
@@ -47,6 +48,7 @@ function BestallPage() {
   const { paket } = Route.useSearch();
   const ladderStatus = Route.useLoaderData();
   const [selected, setSelected] = useState<PackageId>(paket ?? "plus");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const paymentUrls: Record<PackageId, string> = {
     report: ladderStatus.payment_link,
@@ -54,9 +56,38 @@ function BestallPage() {
     monitor: MONITOR_PAYMENT_LINK,
   };
 
-  function onSubmit(e: FormEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    window.location.href = paymentUrls[selected];
+    if (isSubmitting) return;
+
+    setIsSubmitting(true);
+    const formData = new FormData(e.currentTarget);
+    const url = formData.get("url") as string;
+    const company = formData.get("company") as string;
+    const email = formData.get("email") as string;
+    const phone = formData.get("phone") as string;
+    const notesInput = formData.get("notes") as string;
+
+    // Combine phone number into notes so it gets saved without schema changes
+    const combinedNotes = `[Telefon: ${phone || "Ej angivet"}]${notesInput ? ` ${notesInput}` : ""}`;
+
+    try {
+      // Save data directly in the customers table in Supabase
+      await supabase.from("customers").insert({
+        website_url: url,
+        name: company || null,
+        email: email,
+        notes: combinedNotes,
+        package_slug: selected,
+        status: "pending",
+        source: "website_order",
+      });
+    } catch (error) {
+      console.error("Error saving lead:", error);
+    } finally {
+      // Always redirect to payment page
+      window.location.href = paymentUrls[selected];
+    }
   }
 
   function priceFor(id: PackageId, defaultPrice: string): string {
@@ -157,6 +188,13 @@ function BestallPage() {
                 placeholder="du@företaget.se"
                 autoComplete="email"
               />
+              <Field
+                id="phone"
+                label="Telefonnummer"
+                type="tel"
+                placeholder="070-123 45 67"
+                autoComplete="tel"
+              />
 
               <div>
                 <label htmlFor="notes" className="block text-sm font-medium text-ink">
@@ -181,9 +219,10 @@ function BestallPage() {
               </p>
               <button
                 type="submit"
-                className="inline-flex items-center justify-center rounded-[6px] bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90"
+                disabled={isSubmitting}
+                className="inline-flex items-center justify-center rounded-[6px] bg-primary px-6 py-3 text-sm font-medium text-primary-foreground transition-colors hover:bg-primary/90 disabled:opacity-50"
               >
-                Till betalning
+                {isSubmitting ? "Sparar..." : "Till betalning"}
               </button>
             </div>
           </form>
@@ -227,3 +266,4 @@ function Field({
     </div>
   );
 }
+
